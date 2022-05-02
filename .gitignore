@@ -1,3 +1,8 @@
 /venv/
 /.idea/
 /Telegram bot/TOKEN_TELEGRAM.txt
+/Twitter bot/API_KEY.txt
+/Twitter bot/API_KEY_SECRET.txt
+/Twitter bot/BEARER_TOKEN.txt
+/Twitter bot/ACCESS_TOKEN.txt
+/Twitter bot/ACCESS_TOKEN_SECRET.txt
