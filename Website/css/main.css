@@ -1,0 +1,33 @@
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: darkseagreen;
+    font-family: "Courier New", "serif";
+}
+
+#logo {
+    height: auto;
+    max-width: 8%;
+    float: right;
+    position: fixed;
+    top:0;
+    left: 90%;
+}
+
+header > h1 {
+    text-align: center;
+}
+
+header > h2 {
+    text-align: center;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: gray;
+    text-align: center;
+    font-family: Verdana, serif;
+}
