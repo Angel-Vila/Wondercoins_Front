@@ -1,23 +1,32 @@
+import random
+
 import flask
 from flask_cors import CORS
-from flask_googlemaps import GoogleMaps
-from flask_googlemaps import Map
+import peticiones
 
 app = flask.Flask(__name__)
 CORS(app)
-app.config['GOOGLEMAPS_KEY'] = open("GOOGLE_API.txt").read()
-GoogleMaps(app)
 
 
 @app.route("/")
-def index():
-    mapa = Map(
-        identifier="mapa",
-        lat=36.53813063050466,
-        lng=-6.202028173211203,
-        region="es"
-    )
-    return flask.render_template("index.html", mapa=mapa)
+def inicio():
+    num_monedas = peticiones.num_monedas()
+    info_moneda = {'image_obverse': None}
+    while len(info_moneda) < 1 or info_moneda['image_obverse'] is None:
+        id_moneda = random.randint(1, num_monedas)
+        print(id_moneda)
+        info_moneda = peticiones.info_moneda(id_moneda)
+        print(info_moneda)
+    url = f"https://monedaiberica.org/{info_moneda['image_obverse']}"
+    return flask.render_template("inicio.html", moneda=info_moneda, imagen=url)
+
+
+@app.route("/moneda/<int:idmoneda>")
+def moneda(idmoneda):
+    info_moneda = peticiones.info_moneda(idmoneda)
+    if len(info_moneda) < 1:
+        return flask.render_template("404.html")
+    return flask.render_template("moneda.html", moneda=info_moneda)
 
 
 if __name__ == "__main__":
