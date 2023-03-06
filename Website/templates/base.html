@@ -6,35 +6,49 @@
     <link rel="stylesheet" href="../static/src/tail.css">
 </head>
 <body>
-<div class="flex flex-col h-screen">
-<header>
-    <div class="navbar bg-cabecera rounded-sm">
-        <div class="navbar-start">
-            <div class="w-10">
-                <img src="../static/logo-sinletras-sinfondo.jpg" alt="WonderCoins" />
+<div class="drawer">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
+    <div class="drawer-content">
+        <div class="flex flex-col h-screen">
+            <header class="h-1/6">
+                <div class="navbar bg-cabecera rounded-sm overflow-hidden h-5/6">
+                    <div class="navbar-start">
+                        <div>
+                            <img class="w-2/3" src="../static/WONDERLOGO_sin%20letras-sinfondo.png" alt="WonderCoins"/>
+                        </div>
+                    </div>
+                    <div class="navbar-center">
+                        <h1 class="text-8xl text-center font-alice font-bold text-blanco">ARCHEOMONETA</h1>
+                    </div>
+                    <div class="navbar-end">
+                        <label for="my-drawer" class="btn btn-outline drawer-button">MENÚ</label>
+                    </div>
+                </div>
+            </header>
+            <div class="content flex-grow">
+                {% block content %}{% endblock %}
             </div>
-        </div>
-        <div class="navbar-center">
-            <h1 class="text-8xl text-center font-alice">ARCHEOMONETA</h1>
-        </div>
-        <div class="navbar-end">
-            <a class="btn btn-ghost normal-case text-xl">ARCHEOMONETA</a>
+            <footer class="footer p-10 bg-neutral text-neutral-content">
+                <div>
+                    <p class="footer-title">Trabajo realizado por Ángel Vila Vidal</p>
+                </div>
+                <div>
+                    <span class="footer-title">Redes sociales</span>
+                    <div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
-</header>
-<div class="content flex-grow bg-fondo">
-    {% block content %}{% endblock %}
+    <div class="drawer-side">
+        <label for="my-drawer" class="drawer-overlay"></label>
+        <ul class="menu p-4 w-80 bg-base-100 text-base-content">
+            <li><a>Menú</a></li>
+            <li><a>Catálogo</a></li>
+            <li><a>Mapa</a></li>
+        </ul>
+    </div>
 </div>
-<footer class="footer p-10 bg-neutral text-neutral-content">
-    <div>
-        <p class="footer-title">Trabajo realizado por Ángel Vila Vidal</p>
-    </div>
-    <div>
-        <span class="footer-title">Redes sociales</span>
-        <div>
-        </div>
-    </div>
-</footer>
-</div>
+
 </body>
 </html>
