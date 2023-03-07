@@ -13,7 +13,7 @@ module.exports = {
               "alice": ["Alice", "serif"]
           },
             backgroundImage: {
-              "wondercoins": "../static/logo-sinletras-sinfondo.jpg"
+              "wondercoins": "url('../WONDERLOGO_sin%20letras-sinfondo.png')"
             }
         },
   },

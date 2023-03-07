@@ -29,5 +29,16 @@ def moneda(idmoneda):
     return flask.render_template("moneda.html", moneda=info_moneda)
 
 
+@app.route("/buscador")
+def buscador():
+    materiales = peticiones.materiales()
+    return flask.render_template("searchbar.html", mats=materiales)
+
+
+@app.route("/graficos")
+def graficos():
+    return flask.render_template("graficos.html", imagen="./graficos/test.png")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -4,3 +4,4 @@ tweepy~=4.8.0
 telegram~=0.0.1
 instapy~=0.6.16
 pyodbc~=4.0.32
+matplotlib~=3.7.1

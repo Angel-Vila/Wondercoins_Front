@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Buscador{% endblock %}
+{% block content %}
+    <div id="searchbar" class="form-control w-full max-w-xs">
+        <label class="label" for="ID">
+            <span class="label-text">ID</span>
+        </label>
+        <input type="text" placeholder="ID" class="input input-md input-bordered w-full max-w-xs">
+        <label for="materiales" class="label">
+            <span class="label-text">Material</span>
+        </label>
+        <select id="materiales" class="select select-bordered">
+            {% for m in mats %}
+                <option>{{ m }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="columns-2 align-content-end m-top-5">
+        {% for i in range(10) %}
+            <div>
+        <div class="card card-side bg-base-100 shadow-xl h-48 w-auto m-5 inline-block">
+            <figure class="h-48 w-auto object-contain"><img src="../static/logo-sinletras-sinfondo.jpg"
+                                                            class="h-48" alt="Movie"/>
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">New movie is released!</h2>
+                <p>Click the button to watch on Jetflix app.</p>
+            </div>
+        </div>
+    </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
