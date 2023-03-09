@@ -1850,13 +1850,6 @@ html{
   flex-grow: 1;
 }
 
-.card-actions{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
 .card figure{
   display: flex;
   align-items: center;
@@ -2264,6 +2257,22 @@ html{
   justify-content: flex-end;
 }
 
+.radio{
+  flex-shrink: 0;
+  --chkbg: var(--bc);
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-radius: 9999px;
+  border-width: 1px;
+  border-color: hsl(var(--bc) / var(--tw-border-opacity));
+  --tw-border-opacity: 0.2;
+  transition: background, box-shadow var(--animation-input, 0.2s) ease-in-out;
+}
+
 .range{
   height: 1.5rem;
   width: 100%;
@@ -2507,27 +2516,6 @@ html{
 .btn:focus-visible{
   outline: 2px solid hsl(var(--nf));
   outline-offset: 2px;
-}
-
-.btn-primary{
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--p) / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--p) / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: hsl(var(--pc) / var(--tw-text-opacity));
-}
-
-.btn-primary:hover, 
-    .btn-primary.btn-active{
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--pf, var(--p)) / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--pf, var(--p)) / var(--tw-bg-opacity));
-}
-
-.btn-primary:focus-visible{
-  outline: 2px solid hsl(var(--p));
 }
 
 .btn.glass:hover,
@@ -3147,6 +3135,75 @@ body[dir="rtl"] .checkbox:checked,
   }
 }
 
+.radio:focus-visible{
+  outline: 2px solid hsl(var(--bc));
+  outline-offset: 2px;
+}
+
+.radio:checked, 
+  .radio[aria-checked=true]{
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--bc) / var(--tw-bg-opacity));
+  -webkit-animation: radiomark var(--animation-input, 0.2s) ease-in-out;
+          animation: radiomark var(--animation-input, 0.2s) ease-in-out;
+  box-shadow: 0 0 0 4px hsl(var(--b1)) inset, 0 0 0 4px hsl(var(--b1)) inset;
+}
+
+.radio-primary{
+  --chkbg: var(--p);
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--p) / var(--tw-border-opacity));
+}
+
+.radio-primary:hover{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--p) / var(--tw-border-opacity));
+}
+
+.radio-primary:focus-visible{
+  outline: 2px solid hsl(var(--p));
+}
+
+.radio-primary:checked, 
+    .radio-primary[aria-checked=true]{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--p) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--p) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: hsl(var(--pc) / var(--tw-text-opacity));
+}
+
+.radio-accent{
+  --chkbg: var(--a);
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--a) / var(--tw-border-opacity));
+}
+
+.radio-accent:hover{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--a) / var(--tw-border-opacity));
+}
+
+.radio-accent:focus-visible{
+  outline: 2px solid hsl(var(--a));
+}
+
+.radio-accent:checked, 
+    .radio-accent[aria-checked=true]{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--a) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--a) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: hsl(var(--ac) / var(--tw-text-opacity));
+}
+
+.radio:disabled{
+  cursor: not-allowed;
+  opacity: 0.2;
+}
+
 @-webkit-keyframes radiomark{
   0%{
     box-shadow: 0 0 0 12px hsl(var(--b1)) inset, 0 0 0 12px hsl(var(--b1)) inset;
@@ -3417,12 +3474,6 @@ body[dir="rtl"] .checkbox:checked,
   height: 83.333333%;
 }
 
-.h-max{
-  height: -webkit-max-content;
-  height: -moz-max-content;
-  height: max-content;
-}
-
 .h-min{
   height: -webkit-min-content;
   height: -moz-min-content;
@@ -3433,8 +3484,8 @@ body[dir="rtl"] .checkbox:checked,
   height: 12rem;
 }
 
-.max-h-full{
-  max-height: 100%;
+.h-44{
+  height: 11rem;
 }
 
 .w-2\/3{
@@ -3445,12 +3496,6 @@ body[dir="rtl"] .checkbox:checked,
   width: 20rem;
 }
 
-.w-max{
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-}
-
 .w-1\/2{
   width: 50%;
 }
@@ -3459,28 +3504,20 @@ body[dir="rtl"] .checkbox:checked,
   width: 100%;
 }
 
-.w-2\/5{
-  width: 40%;
-}
-
 .w-auto{
   width: auto;
-}
-
-.w-5\/12{
-  width: 41.666667%;
 }
 
 .max-w-xs{
   max-width: 20rem;
 }
 
-.max-w-full{
-  max-width: 100%;
-}
-
 .flex-grow{
   flex-grow: 1;
+}
+
+.cursor-pointer{
+  cursor: pointer;
 }
 
 .columns-2{
@@ -3506,10 +3543,6 @@ body[dir="rtl"] .checkbox:checked,
 
 .flex-col{
   flex-direction: column;
-}
-
-.justify-end{
-  justify-content: flex-end;
 }
 
 .gap-x-4{
@@ -3548,16 +3581,8 @@ body[dir="rtl"] .checkbox:checked,
   background-image: url('../WONDERLOGO_sin%20letras-sinfondo.png');
 }
 
-.bg-cover{
-  background-size: cover;
-}
-
 .bg-contain{
   background-size: contain;
-}
-
-.bg-fixed{
-  background-attachment: fixed;
 }
 
 .bg-center{

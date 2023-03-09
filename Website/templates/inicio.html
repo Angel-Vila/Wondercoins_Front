@@ -3,8 +3,12 @@
 {% block content %}
     <div class="grid grid-cols-2 m-5">
         <div class="grid grid-rows-2 m-5">
-            <img class="mx-auto w-1/2" src={{ imagen }} alt="Bienvenido"/>
-            <a href="" class="h-min"><p class="text-center text-3xl">{{ moneda["section_id"] }}</p></a>
+            <a href="/moneda/{{ moneda["section_id"] }}">
+                <img class="mx-auto w-1/2" src={{ imagen }} alt="Bienvenido"/>
+            </a>
+            <a href="/moneda/{{ moneda["section_id"] }}" class="h-min">
+                <p class="text-center text-3xl">{{ moneda["section_id"] }}</p>
+            </a>
         </div>
         <div class="grid grid-rows-2 m-5">
             <div class="bg-wondercoins  bg-contain bg-no-repeat bg-center">
@@ -28,7 +32,9 @@
                     un
                     espacio fundamental para el intercambio de recursos durante la Antigüedad.</p>
             </div>
-            <div class="inline-block h-min"><hr></div>
+            <div class="inline-block h-min">
+                <hr>
+            </div>
         </div>
     </div>
 

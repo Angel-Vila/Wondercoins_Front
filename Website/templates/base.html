@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Archeomoneta - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="../static/src/tail.css">
+    {% block scripts %}{% endblock %}
 </head>
 <body>
 <div class="drawer">
@@ -18,7 +19,9 @@
                         </div>
                     </div>
                     <div class="navbar-center">
-                        <h1 class="text-8xl text-center font-alice font-bold text-blanco">ARCHEOMONETA</h1>
+                        <a href="/inicio">
+                            <h1 class="text-8xl text-center font-alice font-bold text-blanco">ARCHEOMONETA</h1>
+                        </a>
                     </div>
                     <div class="navbar-end">
                         <label for="my-drawer" class="btn btn-outline drawer-button">MENÚ</label>
@@ -43,12 +46,14 @@
     <div class="drawer-side">
         <label for="my-drawer" class="drawer-overlay"></label>
         <ul class="menu p-4 w-80 bg-base-100 text-base-content">
-            <li><a>Menú</a></li>
-            <li><a>Catálogo</a></li>
+            <li><a href="/inicio">Menú</a></li>
+            <li><a href="/buscador">Catálogo</a></li>
             <li><a>Mapa</a></li>
+            <li><a href="/graficos">Gráficos</a></li>
         </ul>
     </div>
 </div>
 
 </body>
+{% block lower_scripts %}{% endblock %}
 </html>

@@ -1,14 +1,16 @@
 import random
 
 import flask
+import requests
 from flask_cors import CORS
 import peticiones
+import generador_graficos
 
 app = flask.Flask(__name__)
 CORS(app)
 
 
-@app.route("/")
+@app.route("/inicio")
 def inicio():
     num_monedas = peticiones.num_monedas()
     info_moneda = {'image_obverse': None}
@@ -37,7 +39,13 @@ def buscador():
 
 @app.route("/graficos")
 def graficos():
-    return flask.render_template("graficos.html", imagen="./graficos/test.png")
+    grafico = generador_graficos.test()
+    return flask.render_template("graficos.html", graphJSON=grafico)
+
+
+@app.route("/graficos/callback", methods=["POST", "GET"])
+def callback():
+    return generador_graficos.test(flask.request.args.get("data"))
 
 
 if __name__ == "__main__":
