@@ -1,60 +1,60 @@
 {% extends "base.html" %}
-{% block title %}{% endblock %}
+{% block title %}Moneda {{ moneda["section_id"] }}{% endblock %}
 {% block content %}
-<div class="m-5">
-<h1 class="text-2xl">
-    1 - Cádiz - Roma - RIIC-2020
-</h1>
-<div class="grid grid-cols-4 gap-x-4 gap-y-10">
-    <div class="row-span-3">
-        <img src="../static/logo-sinletras-sinfondo.jpg"/>
+    <div class="m-5">
+        <h1 class="text-2xl">
+            1 - Cádiz - Roma - RIIC-2020
+        </h1>
+        <div class="grid grid-cols-4 gap-x-4 gap-y-10">
+            <div class="row-span-3">
+                <img src="../static/logo-sinletras-sinfondo.jpg"/>
+            </div>
+            <div class="row-span-3">
+                <img src="../static/logo-sinletras-sinfondo.jpg"/>
+            </div>
+            <div>
+                <h2>Número</h2>
+                <hr>
+                <p>{{ moneda["section_id"] }}</p>
+            </div>
+            <div>
+                <h2>Otra Numeración</h2>
+                <hr>
+                <p>9876</p>
+            </div>
+            <div>
+                <h2>Colección</h2>
+                <hr>
+            </div>
+            <div>
+                <h2>URI</h2>
+            </div>
+            <div>
+                <h2>Lugar del Hallazgo</h2>
+            </div>
+            <div>
+                <h2>Excavación</h2>
+            </div>
+            <h2>Peso</h2>
+            <h2>Diámetro</h2>
+            <h2>Cuños</h2>
+            <h2>Desgaste</h2>
+        </div>
+        <br>
+        <br>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-10">
+            <h2>Leyenda Anverso</h2>
+            <h2>Leyenda Reverso</h2>
+            <h2>Descripción Anverso</h2>
+            <h2>Descripción Reverso</h2>
+        </div>
+        <br>
+        <br>
+        <div class="grid grid-cols-1 gap-x-4 gap-y-10">
+            <h2>Bibliografía</h2>
+            <h2>Autor</h2>
+            <h2>Observaciones</h2>
+            <h2>Localización</h2>
+        </div>
     </div>
-    <div class="row-span-3">
-        <img src="../static/logo-sinletras-sinfondo.jpg"/>
-    </div>
-    <div>
-        <h2>Número</h2>
-        <hr>
-        <p>12345</p>
-    </div>
-    <div>
-        <h2>Otra Numeración</h2>
-        <hr>
-        <p>9876</p>
-    </div>
-    <div>
-        <h2>Colección</h2>
-        <hr>
-    </div>
-    <div>
-        <h2>URI</h2>
-    </div>
-    <div>
-        <h2>Lugar del Hallazgo</h2>
-    </div>
-    <div>
-        <h2>Excavación</h2>
-    </div>
-    <h2>Peso</h2>
-    <h2>Diámetro</h2>
-    <h2>Cuños</h2>
-    <h2>Desgaste</h2>
-</div>
-<br>
-<br>
-<div class="grid grid-cols-2 gap-x-4 gap-y-10">
-    <h2>Leyenda Anverso</h2>
-    <h2>Leyenda Reverso</h2>
-    <h2>Descripción Anverso</h2>
-    <h2>Descripción Reverso</h2>
-</div>
-<br>
-<br>
-<div class="grid grid-cols-1 gap-x-4 gap-y-10">
-    <h2>Bibliografía</h2>
-    <h2>Autor</h2>
-    <h2>Observaciones</h2>
-    <h2>Localización</h2>
-</div>
-</div>
 {% endblock %}
