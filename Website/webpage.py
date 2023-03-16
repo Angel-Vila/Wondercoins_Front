@@ -1,16 +1,17 @@
 import random
 
 import flask
-import requests
 from flask_cors import CORS
 import peticiones
 import generador_graficos
 
 app = flask.Flask(__name__)
+app.secret_key = "WwwWonderCoins"
 CORS(app)
 
 
 @app.route("/inicio")
+@app.route("/")
 def inicio():
     num_monedas = peticiones.num_monedas()
     info_moneda = {'image_obverse': None}
@@ -31,10 +32,18 @@ def moneda(idmoneda):
     return flask.render_template("moneda.html", moneda=info_moneda)
 
 
-@app.route("/buscador")
+@app.route("/buscador", methods=["POST", "GET"])
 def buscador():
+    busqueda = {}
+    pagina = 0
+    if flask.request.method == "POST":
+        busqueda["material"] = flask.request.form.get("material")
+        busqueda["m_id"] = flask.request.form.get("m_id")
+        flask.session["search"] = busqueda
+        print(flask.session["search"])
+        pagina = int(flask.request.form.get("pagina"))
     materiales = peticiones.materiales()
-    return flask.render_template("searchbar.html", mats=materiales)
+    return flask.render_template("searchbar.html", mats=materiales, n_pages=10, page=pagina)
 
 
 @app.route("/graficos")
