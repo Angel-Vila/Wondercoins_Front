@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Tipo{% endblock %}
+{% block content %}
+    <h1 class="text-2xl">RIC I (Second Edition) Augustus 1A</h1>
+    <div class="grid grid-cols-4 gap-x-5">
+        <div>
+            <h2>Ceca</h2>
+            <hr>
+            <h2>{{ tipo.get("mint") }}</h2>
+        </div>
+        <div>
+            <h2>Material</h2>
+            <hr>
+            <h2>{{ tipo.get("material") }}</h2>
+        </div>
+        <div>
+            <h2>Denominación</h2>
+            <hr>
+            <h2>{{ tipo.get("denomination") }}</h2>
+        </div>
+        <div>
+            <h2>Fecha</h2>
+            <hr>
+            <h2>{{ tipo.get("date_in") }} a {{ tipo.get("date_out") }}</h2>
+        </div>
+    </div>
+    <div class="grid grid-cols-3 gap-x-5">
+        <div>
+            <h2>Emisor</h2>
+            <hr>
+            <h2>P. Cansius</h2>
+        </div>
+        <div>
+            <h2>Autoridad</h2>
+            <hr>
+            <h2>Gaius Octavius | Octavio</h2>
+        </div>
+        <div>
+            <h2>Retrato</h2>
+            <hr>
+            <h2>Augusto | Cayo Octavio</h2>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 gap-x-5">
+        <div>
+            <h2>Diseño Anverso</h2>
+            <hr>
+            <h2>{{ tipo.get("design_obverse") }}</h2>
+        </div>
+        <div>
+            <h2>Diseño Reverso</h2>
+            <hr>
+            <h2>{{ tipo.get("design_reverse") }}</h2>
+        </div>
+        <div>
+            <h2>Leyenda Anverso</h2>
+            <hr>
+            <h2>{{ tipo.get("legend_obverse") }}</h2>
+        </div>
+        <div>
+            <h2>Leyenda Reverso</h2>
+            <hr>
+            <h2>{{ tipo.get("legend_reverse") }}</h2>
+        </div>
+    </div>
+    <h1 class="text-2xl pt-10">Monedas:</h1>
+    <div class="grid grid-cols-3 gap-x-5 gap-y-0">
+    {% for i in tipo.get("monedas") %}
+        <div class="card card-compact w-auto h-1/2 bg-base-100 shadow-xl">
+            <figure class="h-1/2">
+                <img class="h-full" src="{{ i.get("image_obverse") }}" alt="/../static/logo-sinletras-sinfondo.jpg"/>
+                <img class="h-full" src="{{ i.get("image_reverse") }}" alt="/../static/logo-sinletras-sinfondo.jpg"/>
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">{{ i.get("section_id") }} - {{ i.get("mint")[0] }} - {{ i.get("catalogue_type_mint")[0] }}</h2>
+                <a href="/moneda/{{  i.get("section_id")  }}"><p>Más información</p></a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

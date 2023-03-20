@@ -32,6 +32,14 @@ def moneda(idmoneda):
     return flask.render_template("moneda.html", moneda=info_moneda)
 
 
+@app.route("/tipo/<int:idtipo>")
+def tipo(idtipo):
+    info_tipo = peticiones.info_tipo(idtipo)
+    if not info_tipo:
+        return flask.render_template("404.html")
+    return flask.render_template("tipo.html", tipo=info_tipo)
+
+
 @app.route("/buscador", methods=["POST", "GET"])
 def buscador():
     busqueda = {}
