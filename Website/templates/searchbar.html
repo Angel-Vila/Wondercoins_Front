@@ -3,54 +3,57 @@
 {% block content %}
     <div id="searchbar" class="form-control w-full max-w-xs">
         <form method="POST" class="flex flex-row m-5">
-            <label class="label" for="ID">
+            <label class="label" for="m_id">
                 <span class="label-text">ID</span>
             </label>
-            <input type="text" placeholder="ID" class="input input-md input-bordered w-full max-w-xs" name="m_id">
+            <input type="text" placeholder="ID" class="input input-md input-bordered w-full max-w-xs" name="m_id"
+                   id="m_id">
             <label for="materiales" class="label">
                 <span class="label-text">Material</span>
             </label>
             <select id="materiales" class="select select-bordered" name="material">
-            <option selected="{{ "True" if "material" not in session.keys() else "False" }}">Seleccionar</option>
+                <option selected="{{ "True" if "material" not in session.keys() else "False" }}">Seleccionar</option>
                 {% for m in mats %}
                     <option>{{ m }}</option>
                 {% endfor %}
             </select>
-        <label class="label" for="cecas">
-            <span class="label-text">Ceca</span>
-        </label>
-        <input id="cecas" type="text" list="lista_cecas" class="input input-md input-bordered w-full max-w-xs" name="ceca">
-        <datalist id="lista_cecas">
-            <option value="Cadiz">
-            <option value="Jerez">
-        </datalist>
-        <input type="submit" class="btn" value="Buscar">
-        <input type="button" class="btn btn-outline" value="Reiniciar">
+            <label class="label" for="cecas">
+                <span class="label-text">Ceca</span>
+            </label>
+            <input id="cecas" type="text" class="input input-md input-bordered w-full max-w-xs" name="ceca">
+            <input type="submit" class="btn" value="Buscar">
+            <input type="button" class="btn btn-outline" value="Reiniciar">
         </form>
     </div>
-    <div class="btn-group" id="paginador">
-    <form method="post">
-        <button type="submit" class="btn" name="pagina" value="0">INICIO</button>
-        {% if page > 0 %}
-            <button type="submit" class="btn" name="pagina" value="{{ page - 2 }}">{{ page - 1 }}</button>{% endif %}
-        {% if page > 1 %}
-            <button type="submit" class="btn" name="pagina" value="{{ page - 1 }}">{{ page }}</button>{% endif %}
-        <button type="submit" name="pagina" value="{{ page }}" class="btn btn-active">{{ page + 1 }}</button>
-        {% if page < n_pages - 1 %}
-            <button type="submit" class="btn" name="pagina" value="{{ page + 1 }}">{{ page + 2 }}</button> {% endif %}
-        {% if page < n_pages - 2 %}
-            <button type="submit" class="btn" name="pagina" value="{{ page + 2 }}">{{ page + 3 }}</button> {% endif %}
-        <button type="submit" class="btn" name="pagina" value="{{ n_pages - 1 }}">FIN</button>
-    </form>
+    <div class="grid grid-cols-2">
+        <div class="btn-group" id="paginador">
+        <form method="post">
+            <button type="submit" class="btn" name="pagina" value="0">INICIO</button>
+            {% if page > 0 %}
+                <button type="submit" class="btn" name="pagina"
+                        value="{{ page - 2 }}">{{ page - 1 }}</button>{% endif %}
+            {% if page > 1 %}
+                <button type="submit" class="btn" name="pagina" value="{{ page - 1 }}">{{ page }}</button>{% endif %}
+            <button type="submit" name="pagina" value="{{ page }}" class="btn btn-active">{{ page + 1 }}</button>
+            {% if page < n_pages - 1 %}
+                <button type="submit" class="btn" name="pagina"
+                        value="{{ page + 1 }}">{{ page + 2 }}</button> {% endif %}
+            {% if page < n_pages - 2 %}
+                <button type="submit" class="btn" name="pagina"
+                        value="{{ page + 2 }}">{{ page + 3 }}</button> {% endif %}
+            <button type="submit" class="btn" name="pagina" value="{{ n_pages - 1 }}">FIN</button>
+        </form>
     </div>
-    <div class="columns-2 align-content-end m-top-5">
+    <p class="text-xl">Mostrando 1-10 de 100 monedas</p>
+    </div>
+
+    <div class="grid grid-cols-2 align-content-end m-top-5">
         {% for i in range(1, 11) %}
             <div>
                 <div class="card card-side bg-base-100 shadow-xl h-48 w-auto m-5">
-                    <figure class="h-44 w-auto object-contain"><img src="../static/logo-sinletras-sinfondo.jpg"
-                                                                    class="h-44" alt="Movie"/>
-                        <img src="../static/logo-sinletras-sinfondo.jpg"
-                             class="h-44" alt="Movie"/>
+                    <figure class="h-44 w-auto object-contain">
+                        <img src="../static/logo-sinletras-sinfondo.jpg" class="h-44" alt="Movie"/>
+                        <img src="../static/logo-sinletras-sinfondo.jpg" class="h-44" alt="Movie"/>
                     </figure>
                     <div class="card-body">
                         <h2 class="card-title">{{ i }}</h2>

@@ -2,15 +2,14 @@
 {% block title %}Inicio{% endblock %}
 {% block content %}
     <div class="grid grid-cols-2 m-5">
-        <div class="grid grid-rows-2 m-5">
+        <div>
             <a href="/moneda/{{ moneda["section_id"] }}">
-                <img class="mx-auto w-1/2" src={{ imagen }} alt="Bienvenido"/>
+                <img class="mx-auto w-1/2" src="{{ imagen }}" alt="../static/logo-sinletras-sinfondo.jpg"/>
             </a>
             <a href="/moneda/{{ moneda["section_id"] }}" class="h-min">
                 <p class="text-center text-3xl">{{ moneda["section_id"] }}</p>
             </a>
         </div>
-        <div class="grid grid-rows-2 m-5">
             <div class="bg-wondercoins  bg-contain bg-no-repeat bg-center">
                 <p class="text-center font-josefin">WONDERCOINS es una plataforma online para la investigación académica
                     y
@@ -20,7 +19,6 @@
                     herramienta pensada para su aplicación al estudio de múltiples realidades arqueológicas concretas,
                     de
                     manera que proporciona de forma continua novedosos resultados de investigación.
-                    <br>
                     <br>
                     Ante esto, WONDERCOINS aporta el cuerpo documental y gráfico necesario para poder acometer en clave
                     diacrónica el estudio arqueológico y numismático del litoral sur de la Península Ibérica y sus
@@ -32,10 +30,6 @@
                     un
                     espacio fundamental para el intercambio de recursos durante la Antigüedad.</p>
             </div>
-            <div class="inline-block h-min">
-                <hr>
-            </div>
-        </div>
     </div>
 
 {% endblock %}

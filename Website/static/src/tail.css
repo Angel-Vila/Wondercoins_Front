@@ -1855,13 +1855,6 @@ html{
   flex-grow: 1;
 }
 
-.card-actions{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
 .card figure{
   display: flex;
   align-items: center;
@@ -1915,6 +1908,44 @@ html{
   border-color: hsl(var(--bc) / var(--tw-border-opacity));
   --tw-border-opacity: 0.2;
   border-radius: var(--rounded-btn, 0.5rem);
+}
+
+.collapse{
+  position: relative;
+  display: grid;
+  overflow: hidden;
+}
+
+.collapse-title, 
+.collapse > input[type="checkbox"], 
+.collapse-content{
+  grid-column-start: 1;
+  grid-row-start: 1;
+}
+
+.collapse > input[type="checkbox"]{
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  opacity: 0;
+}
+
+.collapse-content{
+  grid-row-start: 2;
+  overflow: hidden;
+  max-height: 0px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  cursor: unset;
+  transition: padding 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.collapse-open .collapse-content,
+.collapse:focus:not(.collapse-close) .collapse-content,
+.collapse:not(.collapse-close)
+  input[type="checkbox"]:checked
+  ~ .collapse-content{
+  max-height: 9000px;
 }
 
 .drawer{
@@ -2530,25 +2561,12 @@ html{
   outline-offset: 2px;
 }
 
-.btn-primary{
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--p) / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--p) / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: hsl(var(--pc) / var(--tw-text-opacity));
-}
-
 .btn-primary:hover, 
     .btn-primary.btn-active{
   --tw-border-opacity: 1;
   border-color: hsl(var(--pf, var(--p)) / var(--tw-border-opacity));
   --tw-bg-opacity: 1;
   background-color: hsl(var(--pf, var(--p)) / var(--tw-bg-opacity));
-}
-
-.btn-primary:focus-visible{
-  outline: 2px solid hsl(var(--p));
 }
 
 .btn-secondary:hover, 
@@ -2926,6 +2944,80 @@ body[dir="rtl"] .checkbox:checked,
     body[dir="rtl"] .checkbox[checked="true"],
     body[dir="rtl"] .checkbox[aria-checked=true]{
   background-image: linear-gradient(45deg, transparent 65%, hsl(var(--chkbg)) 65.99%), linear-gradient(-45deg, transparent 75%, hsl(var(--chkbg)) 75.99%), linear-gradient(45deg, hsl(var(--chkbg)) 40%, transparent 40.99%), linear-gradient(-45deg, hsl(var(--chkbg)) 30%, hsl(var(--chkfg)) 30.99%, hsl(var(--chkfg)) 40%, transparent 40.99%), linear-gradient(45deg, hsl(var(--chkfg)) 50%, hsl(var(--chkbg)) 50.99%);
+}
+
+.collapse:focus-visible{
+  outline: 2px solid hsl(var(--nf));
+  outline-offset: 2px;
+}
+
+.collapse-arrow .collapse-title:after{
+  position: absolute;
+  display: block;
+  height: 0.5rem;
+  width: 0.5rem;
+  transition-property: all;
+  transition-duration: 150ms;
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  top: 1.4rem;
+  right: 1.4rem;
+  content: "";
+  transform-origin: 75% 75%;
+  transform: rotate(45deg);
+  box-shadow: 2px 2px;
+  pointer-events: none;
+}
+
+.collapse-plus .collapse-title:after{
+  position: absolute;
+  display: block;
+  height: 0.5rem;
+  width: 0.5rem;
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  top: 0.9rem;
+  right: 1.4rem;
+  content: "+";
+  pointer-events: none;
+}
+
+.collapse:not(.collapse-open):not(.collapse-close) input[type="checkbox"], 
+.collapse:not(.collapse-open):not(.collapse-close) .collapse-title{
+  cursor: pointer;
+}
+
+.collapse:focus:not(.collapse-open):not(.collapse-close) .collapse-title{
+  cursor: unset;
+}
+
+.collapse-title, 
+.collapse > input[type="checkbox"]{
+  width: 100%;
+  padding: 1rem;
+  padding-right: 3rem;
+  min-height: 3.75rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.collapse-open :where(.collapse-content), 
+.collapse:focus:not(.collapse-close) :where(.collapse-content), 
+.collapse:not(.collapse-close) :where(input[type="checkbox"]:checked ~ .collapse-content){
+  padding-bottom: 1rem;
+  transition: padding 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.collapse-open.collapse-arrow .collapse-title:after,
+.collapse-arrow:focus:not(.collapse-close) .collapse-title:after,
+.collapse-arrow:not(.collapse-close) input[type="checkbox"]:checked ~ .collapse-title:after{
+  transform: rotate(225deg);
+}
+
+.collapse-open.collapse-plus .collapse-title:after,
+.collapse-plus:focus:not(.collapse-close) .collapse-title:after,
+.collapse-plus:not(.collapse-close) input[type="checkbox"]:checked ~ .collapse-title:after{
+  content: "−";
 }
 
 .drawer.drawer-end > .drawer-toggle:checked ~ .drawer-content{
@@ -3419,6 +3511,10 @@ body[dir="rtl"] .checkbox:checked,
   }
 }
 
+.rounded-box{
+  border-radius: var(--rounded-box, 1rem);
+}
+
 .glass,
   .glass:hover,
   .glass.btn-active{
@@ -3510,24 +3606,9 @@ body[dir="rtl"] .checkbox:checked,
   margin: 1.25rem;
 }
 
-.mx-auto{
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.my-5{
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.mx-20{
-  margin-left: 5rem;
-  margin-right: 5rem;
-}
-
-.mx-40{
-  margin-left: 10rem;
-  margin-right: 10rem;
+.mx-80{
+  margin-left: 20rem;
+  margin-right: 20rem;
 }
 
 .my-2{
@@ -3535,19 +3616,9 @@ body[dir="rtl"] .checkbox:checked,
   margin-bottom: 0.5rem;
 }
 
-.mx-80{
-  margin-left: 20rem;
-  margin-right: 20rem;
-}
-
-.mx-3{
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-}
-
-.my-3{
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+.mx-auto{
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .block{
@@ -3592,24 +3663,8 @@ body[dir="rtl"] .checkbox:checked,
   height: 11rem;
 }
 
-.h-1\/3{
-  height: 33.333333%;
-}
-
 .h-1\/2{
   height: 50%;
-}
-
-.h-auto{
-  height: auto;
-}
-
-.h-2\/3{
-  height: 66.666667%;
-}
-
-.h-3\/4{
-  height: 75%;
 }
 
 .h-full{
@@ -3638,10 +3693,6 @@ body[dir="rtl"] .checkbox:checked,
 
 .w-auto{
   width: auto;
-}
-
-.w-96{
-  width: 24rem;
 }
 
 .max-w-xs{
@@ -3689,14 +3740,6 @@ body[dir="rtl"] .checkbox:checked,
   flex-direction: column;
 }
 
-.justify-end{
-  justify-content: flex-end;
-}
-
-.gap-5{
-  gap: 1.25rem;
-}
-
 .gap-x-4{
   -moz-column-gap: 1rem;
        column-gap: 1rem;
@@ -3721,6 +3764,15 @@ body[dir="rtl"] .checkbox:checked,
 
 .rounded-sm{
   border-radius: 0.125rem;
+}
+
+.border{
+  border-width: 1px;
+}
+
+.border-base-300{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--b3, var(--b2)) / var(--tw-border-opacity));
 }
 
 .bg-cabecera{
@@ -3767,11 +3819,6 @@ body[dir="rtl"] .checkbox:checked,
   padding: 1rem;
 }
 
-.py-5{
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-}
-
 .pt-10{
   padding-top: 2.5rem;
 }
@@ -3808,8 +3855,17 @@ body[dir="rtl"] .checkbox:checked,
   line-height: 2.25rem;
 }
 
+.text-xl{
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
 .font-bold{
   font-weight: 700;
+}
+
+.font-medium{
+  font-weight: 500;
 }
 
 .text-blanco{

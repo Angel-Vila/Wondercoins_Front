@@ -13,15 +13,11 @@ CORS(app)
 @app.route("/inicio")
 @app.route("/")
 def inicio():
+    dedalo_link = "https://wondercoins.uca.es"
     num_monedas = peticiones.num_monedas()
-    info_moneda = {'image_obverse': None}
-    while len(info_moneda) < 1 or info_moneda['image_obverse'] is None:
-        id_moneda = random.randint(1, num_monedas)
-        print(id_moneda)
-        info_moneda = peticiones.info_moneda(id_moneda)
-        print(info_moneda)
-    url = f"https://monedaiberica.org/{info_moneda['image_obverse']}"
-    return flask.render_template("inicio.html", moneda=info_moneda, imagen=url)
+    imagen = dedalo_link + random.choice(num_monedas)["image_obverse"]
+    info_moneda = "Prueba"
+    return flask.render_template("inicio.html", moneda=info_moneda, imagen=imagen)
 
 
 @app.route("/moneda/<int:idmoneda>")
@@ -38,6 +34,11 @@ def tipo(idtipo):
     if not info_tipo:
         return flask.render_template("404.html")
     return flask.render_template("tipo.html", tipo=info_tipo)
+
+
+@app.route("/tesoros")
+def tesoros():
+    return flask.render_template("tesoro.html")
 
 
 @app.route("/buscador", methods=["POST", "GET"])
