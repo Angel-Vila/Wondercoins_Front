@@ -15,9 +15,11 @@ CORS(app)
 def inicio():
     dedalo_link = "https://wondercoins.uca.es"
     num_monedas = peticiones.num_monedas()
-    imagen = dedalo_link + random.choice(num_monedas)["image_obverse"]
-    info_moneda = "Prueba"
-    return flask.render_template("inicio.html", moneda=info_moneda, imagen=imagen)
+    info_moneda = random.choice(num_monedas)
+    imagen = dedalo_link + info_moneda["image_obverse"]
+    pie_imagen = info_moneda["type_full_value"].split("|")[-1].strip()
+    id_moneda = info_moneda["section_id"]
+    return flask.render_template("inicio.html", moneda=pie_imagen, imagen=imagen, id_moneda=id_moneda)
 
 
 @app.route("/moneda/<int:idmoneda>")
@@ -46,13 +48,27 @@ def buscador():
     busqueda = {}
     pagina = 0
     if flask.request.method == "POST":
-        busqueda["material"] = flask.request.form.get("material")
-        busqueda["m_id"] = flask.request.form.get("m_id")
-        flask.session["search"] = busqueda
-        print(flask.session["search"])
-        pagina = int(flask.request.form.get("pagina"))
+        if "Buscar" in flask.request.form:
+            busqueda["material"] = flask.request.form.get("material")
+            busqueda["section_id"] = flask.request.form.get("m_id")
+            flask.session["search"] = busqueda
+        pagina = int(flask.request.form.get("pagina")) if flask.request.form.get("pagina") is not None else pagina
     materiales = peticiones.materiales()
-    return flask.render_template("searchbar.html", mats=materiales, n_pages=10, page=pagina)
+    print(flask.session.get("search")) if "search" in flask.session.keys() else "Vacio"
+    if "search" not in flask.session.keys():
+        monedas = peticiones.monedas_buscador_base(pagina)
+    else:
+        monedas = peticiones.monedas_buscador(peticiones.busqueda(flask.session.get("search")), pagina)
+    num_monedas = peticiones.busqueda(flask.session.get("search"))
+    num_paginas = len(num_monedas) // 100 + 1 if len(num_monedas) % 100 != 0 else len(num_monedas) // 100
+    print(len(num_monedas), num_paginas)
+    return flask.render_template("searchbar.html", mats=materiales, n_pages=num_paginas, page=pagina, monedas=monedas)
+
+
+@app.route("/buscador/reiniciar", methods=["POST", "GET"])
+def reiniciar_busqueda():
+    flask.session.pop("search")
+    return flask.redirect("/buscador")
 
 
 @app.route("/graficos")

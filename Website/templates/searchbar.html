@@ -12,17 +12,17 @@
                 <span class="label-text">Material</span>
             </label>
             <select id="materiales" class="select select-bordered" name="material">
-                <option selected="{{ "True" if "material" not in session.keys() else "False" }}">Seleccionar</option>
+                <option selected="{{ "True" if session.get("material") != None else "False" }}">Seleccionar</option>
                 {% for m in mats %}
-                    <option>{{ m }}</option>
+                    <option selected="{{ "True" if session.get("search")["material"] == m else "False" }}">{{ m }}</option>
                 {% endfor %}
             </select>
             <label class="label" for="cecas">
                 <span class="label-text">Ceca</span>
             </label>
             <input id="cecas" type="text" class="input input-md input-bordered w-full max-w-xs" name="ceca">
-            <input type="submit" class="btn" value="Buscar">
-            <input type="button" class="btn btn-outline" value="Reiniciar">
+            <input type="submit" class="btn" value="Buscar" name="Buscar">
+            <a href="/buscador/reiniciar"><input type="button" class="btn btn-outline" value="Reiniciar"></a>
         </form>
     </div>
     <div class="grid grid-cols-2">
@@ -48,19 +48,22 @@
     </div>
 
     <div class="grid grid-cols-2 align-content-end m-top-5">
-        {% for i in range(1, 11) %}
+        {% for i in monedas %}
+            <a href="/moneda/{{ i.get("section_id") }}">
             <div>
                 <div class="card card-side bg-base-100 shadow-xl h-48 w-auto m-5">
-                    <figure class="h-44 w-auto object-contain">
-                        <img src="../static/logo-sinletras-sinfondo.jpg" class="h-44" alt="Movie"/>
-                        <img src="../static/logo-sinletras-sinfondo.jpg" class="h-44" alt="Movie"/>
+                    <figure class="h-auto w-1/3 w-auto object-contain">
+                        <img src="{{ i.get("image_obverse") }}" alt="../static/logo-sinletras-sinfondo.jpg" class="w-1/2"/>
+                        <img src="{{ i.get("image_reverse") }}" alt="../static/logo-sinletras-sinfondo.jpg" class="w-1/2"/>
                     </figure>
                     <div class="card-body">
-                        <h2 class="card-title">{{ i }}</h2>
-                        <p>Click the button to watch on Jetflix app.</p>
+                        <h2 class="card-title">{{ i.get("number", "S/N") }}</h2>
+                        <p>{{ i.get("section_id") }}</p>
                     </div>
                 </div>
             </div>
+            </a>
+
         {% endfor %}
     </div>
 {% endblock %}

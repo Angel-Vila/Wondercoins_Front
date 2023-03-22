@@ -4,10 +4,11 @@ import json
 
 def num_monedas():
     r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
-                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&ar_fields=image_obverse&"
+                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&ar_fields=image_obverse%2C%20type_full_value"
+                     "%2C%20section_id&"
                      "lang=lg-spa&limit=0&resolve_portal=false&resolve_dd_relations=false")
     result = r.json()["result"]
-    filtered = list(filter(lambda x: x["image_obverse"] != "null", result))
+    filtered = list(filter(lambda x: x["image_obverse"] != "null" and x["type_full_value"] != "", result))
     return filtered
 
 
@@ -34,7 +35,6 @@ def materiales():
                      "limit=0&resolve_portal=false&resolve_dd_relations=false")
     lista = r.json()["result"]
     result = set()
-    print(lista)
     for i in lista:
         result.add(i["term"])
     return result
@@ -49,7 +49,10 @@ def info_tipo(id_tipo):
                      f"section_id={id_tipo}&lang=lg-spa&limit=10&resolve_portal=false&resolve_dd_relations=false")
     try:
         result = r.json()["result"][0]
-        result["monedas"] = coins_tipo(json.loads(result.get("coin_references")))
+        try:
+            result["monedas"] = coins_tipo(json.loads(result.get("coin_references")))
+        except TypeError:
+            result["monedas"] = []
     except IndexError:
         result = []
     return result
@@ -78,9 +81,54 @@ def busqueda(buscador):
                      "lang=lg-spa&limit=0&resolve_portal=false&resolve_dd_relations=false")
     busca = r.json()["result"]
     for i in buscador.keys():
-        busca = list(filter(lambda x: x[i] == buscador[i], busca))
-    return busca
+        busca = list(filter(lambda x: x[i] == buscador[i], busca)) if buscador[i] != "" and buscador[i] is not None \
+            else busca
+    return list(map(lambda x: str(x["section_id"]), busca))
+
+
+def monedas_buscador_base(offset):
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
+                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&ar_fields=number%2C%20image_obverse%2C%20"
+                     "image_reverse%2C%20section_id%2C%20findspot%2C%20material%2C%20type_data&lang=lg-spa&"
+                     "order=section_id%20ASC&limit=100"
+                     f"&offset={offset * 100}&resolve_portal=false&resolve_dd_relations=false")
+    result = r.json()["result"]
+    dedalo_link = "https://wondercoins.uca.es"
+    for i in result:
+        try:
+            i["image_obverse"] = dedalo_link + i["image_obverse"]
+        except TypeError:
+            i["image_obverse"] = "../static/logo-sinletras-sinfondo.jpg"
+        try:
+            i["image_reverse"] = dedalo_link + i["image_reverse"]
+        except TypeError:
+            i["image_reverse"] = "../static/logo-sinletras-sinfondo.jpg"
+    return result
+
+
+def monedas_buscador(id_monedas, offset):
+    lista_monedas = id_monedas[offset * 100:offset * 100 + 100] if len(id_monedas) > offset * 100 + 100 \
+        else id_monedas[offset * 100:]
+    print(lista_monedas)
+    lista_ids = ",".join(lista_monedas)
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
+                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&ar_fields=number%2C%20image_obverse%2C%20"
+                     "image_reverse%2C%20section_id%2C%20findspot%2C%20material%2C%20type_data&lang=lg-spa&"
+                     f"order=section_id%20ASC&limit=100&section_id={lista_ids}"
+                     f"&resolve_portal=false&resolve_dd_relations=false")
+    result = r.json()["result"]
+    dedalo_link = "https://wondercoins.uca.es"
+    for i in result:
+        try:
+            i["image_obverse"] = dedalo_link + i["image_obverse"]
+        except TypeError:
+            i["image_obverse"] = "../static/logo-sinletras-sinfondo.jpg"
+        try:
+            i["image_reverse"] = dedalo_link + i["image_reverse"]
+        except TypeError:
+            i["image_reverse"] = "../static/logo-sinletras-sinfondo.jpg"
+    return result
 
 
 if __name__ == "__main__":
-    print(busqueda({"material": "Orichalcum"}))
+    print(monedas_buscador(busqueda({"material": "Bronce emplomado"}), 0))

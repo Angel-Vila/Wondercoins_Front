@@ -3,11 +3,11 @@
 {% block content %}
     <div class="grid grid-cols-2 m-5">
         <div>
-            <a href="/moneda/{{ moneda["section_id"] }}">
+            <a href="/moneda/{{ id_moneda }}">
                 <img class="mx-auto w-1/2" src="{{ imagen }}" alt="../static/logo-sinletras-sinfondo.jpg"/>
             </a>
-            <a href="/moneda/{{ moneda["section_id"] }}" class="h-min">
-                <p class="text-center text-3xl">{{ moneda["section_id"] }}</p>
+            <a href="/moneda/{{ id_moneda }}" class="h-min">
+                <p class="text-center text-3xl">{{ moneda }}</p>
             </a>
         </div>
             <div class="bg-wondercoins  bg-contain bg-no-repeat bg-center">
