@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Tesoros{% endblock %}
+{% block content %}
+    {% for i in lista_tesoros %}
+        <div tabindex="0" class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+        <div class="collapse-title text-xl font-medium">
+            {{ i.get("name") }}
+        </div>
+        <div class="collapse-content">
+            <h2 class="text-xl font-bold">Descripción</h2>
+            {{ i.get("public_info", "Este tesoro no posee descripción") }}
+            <br>
+            <a class="text-xl font-bold">Más información</a>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}
