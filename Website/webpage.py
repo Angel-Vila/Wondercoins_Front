@@ -56,6 +56,18 @@ def hallazgo(id_hallazgo):
     return flask.render_template("hallazgo.html", datos=datos_hallazgo)
 
 
+@app.route("/cecas")
+def mapa_cecas():
+    cecas = peticiones.cecas_mapa()
+    return flask.render_template("mapa_cecas.html", cecas=cecas)
+
+
+@app.route("/ceca/<int:id_ceca>")
+def ceca(id_ceca):
+    datos_ceca = peticiones.info_ceca(id_ceca)
+    return flask.render_template("ceca.html", datos=datos_ceca)
+
+
 @app.route("/buscador", methods=["POST", "GET"])
 def buscador():
     busqueda = {}

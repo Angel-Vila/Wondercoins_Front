@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+          integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+            integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+{% endblock %}
+{% block content %}
+    <h2 class="text-xl font-bold">{{ datos.get("name") }}</h2>
+    <div class="grid grid-cols-2 gap-x-5">
+        <div>
+            <h2>Localización</h2>
+            <hr>
+            <p>{{ datos.get("place") }}</p>
+        </div>
+        <div>
+            <h2>Indexación</h2>
+            <hr>
+            <p>{{ datos.get("indexation") }}</p>
+        </div>
+    </div>
+    <h2>URIs</h2>
+    <hr>
+    <ul class="list-disc">
+        {% for i in datos.get("uri").split("|") %}
+            <li><a href="{{ i.strip() }}" target="_blank">{{ i.strip() }}</a></li>
+        {% endfor %}
+    </ul>
+    <h2>Dispersión monetaria de la ceca</h2>
+    <hr>
+    <br>
+    <div id="map" class="w-full h-1/3"></div>
+    <script src="../static/mapa.js"></script>
+    <script>
+        const greenIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+        L.marker([{{ datos["map"]["lat"] }}, {{ datos["map"]["lon"] }}]).addTo(map).bindPopup("{{ datos["name"] }}");
+        {% for i in datos["monedas"] %}
+            L.marker([{{ i["coords"]["lat"] }}, {{ i["coords"]["lon"] }}], {icon: greenIcon}).addTo(map).
+            bindPopup("{{ i.get("section_id") }} - {{ i.get("mint")[0] }} - {{ i.get("catalogue_type_mint")[0] }}");
+        {% endfor %}
+    </script>
+{% endblock %}
