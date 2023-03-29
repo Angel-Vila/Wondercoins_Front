@@ -22,7 +22,7 @@
     </div>
     <h2>URIs</h2>
     <hr>
-    <ul class="list-disc">
+    <ul class="list-disc grid grid-cols-2">
         {% for i in datos.get("uri").split("|") %}
             <li><a href="{{ i.strip() }}" target="_blank">{{ i.strip() }}</a></li>
         {% endfor %}
@@ -44,7 +44,7 @@
         L.marker([{{ datos["map"]["lat"] }}, {{ datos["map"]["lon"] }}]).addTo(map).bindPopup("{{ datos["name"] }}");
         {% for i in datos["monedas"] %}
             L.marker([{{ i["coords"]["lat"] }}, {{ i["coords"]["lon"] }}], {icon: greenIcon}).addTo(map).
-            bindPopup("{{ i.get("section_id") }} - {{ i.get("mint")[0] }} - {{ i.get("catalogue_type_mint")[0] }}");
+            bindPopup("<a target='_blank' href='/moneda/{{ i.get("section_id") }}'>{{ i.get("section_id") }} - {{ i.get("mint")[0] }} - {{ i.get("catalogue_type_mint")[0] }}</a>");
         {% endfor %}
     </script>
 {% endblock %}

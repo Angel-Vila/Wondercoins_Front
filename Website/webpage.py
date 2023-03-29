@@ -75,6 +75,8 @@ def buscador():
     if flask.request.method == "POST":
         if "Buscar" in flask.request.form:
             busqueda["material"] = flask.request.form.get("material")
+            busqueda["type_full_value"] = flask.request.form.get("tipos")
+            busqueda["mint"] = flask.request.form.get("ceca")
             try:
                 busqueda["section_id"] = int(flask.request.form.get("m_id"))
             except ValueError:
@@ -87,19 +89,24 @@ def buscador():
         monedas = peticiones.monedas_buscador_base(pagina)
         num_monedas = peticiones.num_monedas()
         num_paginas = num_monedas // 100 + 1 if num_monedas % 100 != 0 else num_monedas // 100
-        print(num_monedas, num_paginas)
     else:
         monedas = peticiones.monedas_buscador(peticiones.busqueda(flask.session.get("search")), pagina)
         num_monedas = peticiones.busqueda(flask.session.get("search"))
         num_paginas = len(num_monedas) // 100 + 1 if len(num_monedas) % 100 != 0 else len(num_monedas) // 100
-        print(len(num_monedas), num_paginas)
-    return flask.render_template("searchbar.html", mats=materiales, n_pages=num_paginas, page=pagina, monedas=monedas)
+        num_monedas = len(num_monedas)
+    return flask.render_template("searchbar.html", mats=materiales, n_pages=num_paginas, page=pagina, monedas=monedas,
+                                 n_monedas=num_monedas)
 
 
 @app.route("/buscador/reiniciar", methods=["POST", "GET"])
 def reiniciar_busqueda():
     flask.session.pop("search")
     return flask.redirect("/buscador")
+
+
+@app.route("/buscador_tipos", methods=["POST", "GET"])
+def buscador_tipos():
+    return flask.render_template("search_tipos.html")
 
 
 @app.route("/graficos")

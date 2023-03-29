@@ -6,6 +6,7 @@ module.exports = {
           "fondo": "#d4dfdf",
           "cabecera": "#03989e",
           "blanco": "#FFFFFF",
+          "fondo_barra": "#e5e5e5"
       },
         extend: {
           fontFamily: {

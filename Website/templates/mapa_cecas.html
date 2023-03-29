@@ -11,7 +11,8 @@
     <script src="../static/mapa.js"></script>
     <script>
     {% for i in cecas %}
-        L.marker([{{ i["map"]["lat"] }}, {{ i["map"]["lon"] }}]).addTo(map).bindPopup("{{ i["name"] }}");
+        L.marker([{{ i["map"]["lat"] }}, {{ i["map"]["lon"] }}]).addTo(map).
+        bindPopup('<a target=blank_ href="/ceca/{{ i["section_id"] }}">{{ i["name"] }}</a>');
     {% endfor %}
     </script>
 {% endblock %}
