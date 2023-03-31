@@ -36,6 +36,14 @@ def info_moneda(id_moneda):
         except TypeError:
             result["image_obverse"] = "../static/logo-sinletras-sinfondo.jpg"
             result["image_reverse"] = "../static/logo-sinletras-sinfondo.jpg"
+        try:
+            result["mint"] = json.loads(result["mint"])
+        except AttributeError:
+            result["mint"] = ""
+        try:
+            result["catalogue_type_mint"] = json.loads(result["catalogue_type_mint"])
+        except AttributeError:
+            result["catalogue_type_mint"] = ""
     except IndexError:
         result = []
     return result
@@ -54,7 +62,37 @@ def materiales():
                 result.add(j.strip())
         except AttributeError:
             continue
-    return result
+    return sorted(result)
+
+
+def denominaciones():
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
+                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=types&sql_fullselect=SELECT%20DISTINCT(denomination)"
+                     "%20FROM%20types&lang=lg-spa&limit=0&resolve_portal=false&resolve_dd_relations=false")
+    lista = r.json()["result"]
+    result = set()
+    for i in lista:
+        try:
+            for j in i["denomination"].split("|"):
+                result.add(j.strip())
+        except AttributeError:
+            continue
+    result.remove("")
+    return sorted(result)
+
+
+def catalogos():
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
+                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=types&sql_fullselect=SELECT%20DISTINCT(catalogue)"
+                     "%20FROM%20types&lang=lg-spa&limit=0&resolve_portal=false&resolve_dd_relations=false")
+    lista = r.json()["result"]
+    result = set()
+    for i in lista:
+        try:
+            result.add(i["catalogue"])
+        except AttributeError:
+            continue
+    return sorted(result)
 
 
 def info_tipo(id_tipo):
@@ -135,6 +173,20 @@ def monedas_buscador_base(offset):
     return result
 
 
+def monedas_graficos_base(campo):
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
+                     f"code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&ar_fields={campo}&lang=lg-spa&"
+                     "&limit=0&resolve_portal=false&resolve_dd_relations=false")
+    result = r.json()["result"]
+    for i in result:
+        i[campo] = i[campo].split("|")[0].strip() if i[campo] is not None else None
+    datos = {i[campo]: result.count(i) for i in result}
+    datos.pop(None) if None in datos else None
+    datos.pop("") if "" in datos else None
+    data = {"keys": list(datos.keys()), "data": list(datos.values())}
+    return data
+
+
 def monedas_buscador(id_monedas, offset):
     lista_monedas = id_monedas[offset * 100:offset * 100 + 100] if len(id_monedas) > offset * 100 + 100 \
         else id_monedas[offset * 100:]
@@ -192,16 +244,17 @@ def info_tesoro(id_tesoro):
     return result
 
 
-def datos_grafico(campo):
+def datos_grafico(vec_monedas, campo):
     r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
                      "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&sql_fullselect="
-                     f"SELECT%20{campo}%20FROM%20coins&lang=lg-spa&limit=0"
+                     f"SELECT%20{campo}%20FROM%20coins&lang=lg-spa&limit=0&section_id={','.join(vec_monedas)}"
                      "&resolve_portal=false&resolve_dd_relations=false")
     result = r.json()["result"]
     for i in result:
         i[campo] = i[campo].split("|")[0].strip() if i[campo] is not None else None
     datos = {i[campo]: result.count(i) for i in result}
-    datos.pop(None)
+    datos.pop(None) if None in datos else None
+    datos.pop("") if "" in datos else None
     data = {"keys": list(datos.keys()), "data": list(datos.values())}
     return data
 
@@ -272,6 +325,28 @@ def cecas_mapa():
     return lista_cecas
 
 
+def hallazgos_mapa():
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
+                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=findspots&ar_fields=section_id%2C%20name%2C%20map%"
+                     "2C%20coins&lang=lg-spa&limit=0&resolve_portal=false&resolve_dd_relations=false")
+    result = r.json()["result"]
+    lista_hallazgos = list(filter(lambda x: x["coins"] is not None and x["map"] != "{}", result))
+    for i in lista_hallazgos:
+        i["map"] = json.loads(i["map"])
+    return lista_hallazgos
+
+
+def tesoros_mapa():
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
+                     "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=hoards&ar_fields=section_id%2C%20name%2C%20map&"
+                     "lang=lg-spa&limit=10&resolve_portal=false&resolve_dd_relations=false")
+    result = r.json()["result"]
+    lista_tesoros = list(filter(lambda x: x["map"] != "{}", result))
+    for i in lista_tesoros:
+        i["map"] = json.loads(i["map"])
+    return lista_tesoros
+
+
 def info_ceca(id_ceca):
     r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/"
                      "records?code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=mints&ar_fields=name%2C%20indexation%"
@@ -307,4 +382,4 @@ def coins_ceca(vec_coins):
 
 
 if __name__ == "__main__":
-    print(busqueda({"type_full_value": "RIIC"}))
+    print(len(tesoros_mapa()))

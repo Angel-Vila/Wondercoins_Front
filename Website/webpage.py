@@ -50,6 +50,11 @@ def tesoro(id_tesoro):
     return flask.render_template("tesoro.html", datos=datos_tesoro)
 
 
+@app.route("/hallazgos")
+def hallazgos():
+    lista_hallazgos = peticiones.hallazgos()
+    return flask.render_template("hallazgos_lista.html", hallazgos=lista_hallazgos)
+
 @app.route("/hallazgo/<int:id_hallazgo>")
 def hallazgo(id_hallazgo):
     datos_hallazgo = peticiones.info_hallazgo(id_hallazgo)
@@ -106,18 +111,63 @@ def reiniciar_busqueda():
 
 @app.route("/buscador_tipos", methods=["POST", "GET"])
 def buscador_tipos():
-    return flask.render_template("search_tipos.html")
+    materiales = peticiones.materiales()
+    denominaciones = peticiones.denominaciones()
+    catalogos = peticiones.catalogos()
+    return flask.render_template("search_tipos.html", mats=materiales, dems=denominaciones, cats=catalogos,
+                                 n_pages=10, page=0)
 
 
-@app.route("/graficos")
+@app.route("/graficos", methods=["POST", "GET"])
 def graficos():
-    grafico = generador_graficos.test()
-    return flask.render_template("graficos.html", graphJSON=grafico)
+    busqueda = {}
+    dato = "mint"
+    if flask.request.method == "POST":
+        if "Buscar" in flask.request.form:
+            busqueda["material"] = flask.request.form.get("material")
+            busqueda["type_full_value"] = flask.request.form.get("tipos")
+            busqueda["mint"] = flask.request.form.get("ceca")
+            dato = flask.request.form.get("valor")
+            try:
+                busqueda["section_id"] = int(flask.request.form.get("m_id"))
+            except ValueError:
+                busqueda["section_id"] = 0
+            flask.session["search_graficos"] = busqueda
+    materiales = peticiones.materiales()
+    print(flask.session.get("search_graficos")) if "search_graficos" in flask.session.keys() else print("Vacio")
+    if "search_graficos" not in flask.session.keys():
+        datos = peticiones.monedas_graficos_base(dato)
+    elif len(list(filter(lambda x: flask.session.get("search_graficos")[x] not in ["", 0],
+                         flask.session.get("search_graficos").keys()))) == 0:
+        datos = peticiones.monedas_graficos_base(dato)
+    else:
+        monedas = peticiones.busqueda(flask.session.get("search_graficos"))
+        datos = peticiones.datos_grafico(monedas, dato)
+    print(datos)
+    flask.session["datos_grafico"] = datos
+    grafico = generador_graficos.test(datos)
+    return flask.render_template("graficos.html", graphJSON=grafico, mats=materiales)
+
+
+@app.route("/graficos/reiniciar")
+def reiniciar_graficos():
+    flask.session.pop("search_graficos") if "search_graficos" in flask.session.keys() else None
+    flask.session.pop("datos_grafico") if "datos_grafico" in flask.session.keys() else None
+    return flask.redirect("/graficos")
 
 
 @app.route("/graficos/callback", methods=["POST", "GET"])
 def callback():
-    return generador_graficos.test(flask.request.args.get("data"))
+    print(flask.session.get("datos_grafico"))
+    return generador_graficos.test(flask.session.get("datos_grafico"), flask.request.args.get("data"))
+
+
+@app.route("/mapa")
+def mapa():
+    cecas = peticiones.cecas_mapa()
+    hallazgos = peticiones.hallazgos_mapa()
+    tesoros = peticiones.tesoros_mapa()
+    return flask.render_template("mapa.html", cecas=cecas, hallazgos=hallazgos, tesoros=tesoros)
 
 
 if __name__ == "__main__":

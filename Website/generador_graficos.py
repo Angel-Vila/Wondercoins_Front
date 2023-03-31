@@ -3,13 +3,12 @@ import plotly.express as px
 import plotly.utils
 
 
-def test(chart_type="pie"):
-    df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
-    df.loc[df['pop'] < 2.e6, 'country'] = 'Other countries'
+def test(datos, chart_type="pie"):
+    print(chart_type)
     if chart_type == "pie":
-        fig = px.pie(df, values='pop', names='country', title='Population of European continent')
+        fig = px.pie(datos, values='data', names='keys', title='Monedas según material')
     elif chart_type == "bar":
-        fig = px.bar(df, x="country", y="pop", title="Population of European continent")
+        fig = px.bar(datos, x="keys", y="data", title="Monedas según material")
     else:
         fig = ""
 

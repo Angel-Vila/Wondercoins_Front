@@ -13,6 +13,74 @@
     }</script>
 {% endblock %}
 {% block content %}
+    <div id="searchbar" class="form-control w-full">
+        <form method="POST">
+            <div class="grid grid-cols-3 gap-5">
+                <div>
+                    <label class="label" for="m_id">
+                        <span class="label-text">ID</span>
+                    </label>
+                    <input type="text" placeholder="ID" class="input input-md input-bordered w-full max-w-xs"
+                           name="m_id"
+                           id="m_id">
+                </div>
+                <div>
+                    <label for="materiales" class="label">
+                        <span class="label-text">Material</span>
+                    </label>
+                    <select id="materiales" class="select select-bordered" name="material">
+                        <option value="" selected>Seleccionar</option>
+                        {% for m in mats %}
+                            <option>{{ m }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="label" for="hallazgos">
+                        <span class="label-text">Lugar de hallazgo</span>
+                    </label>
+                    <input id="hallazgos" type="text" class="input input-md input-bordered w-full max-w-xs"
+                           name="hallazgo">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-x-5">
+                <div>
+                    <label class="label" for="tipos">
+                        <span class="label-text">Tipo</span>
+                    </label>
+                    <input id="tipos" class="input input-md input-bordered w-full max-w" name="tipos">
+                </div>
+                <div>
+                    <label class="label" for="ceca">
+                        <span class="label-text">Ceca</span>
+                    </label>
+                    <input id="ceca" class="input input-md input-bordered w-full max-w" name="ceca">
+                </div>
+            </div>
+        <br>
+        <div class="grid grid-cols-4">
+            <label class="label cursor-pointer">
+                <span class="label label-text">Ceca</span>
+                <input type="radio" class="radio" checked name="valor" value="mint">
+            </label>
+            <label class="label cursor-pointer">
+                <span class="label label-text">Denominación</span>
+                <input type="radio" class="radio" name="valor" value="denomination">
+            </label>
+            <label class="label cursor-pointer">
+                <span class="label label-text">Lugar del Hallazgo</span>
+                <input type="radio" class="radio" name="valor" value="findspot">
+            </label>
+            <label class="label cursor-pointer">
+                <span class="label label-text">Año</span>
+                <input type="radio" class="radio" name="valor" value="date_in">
+            </label>
+        </div>
+            <input type="submit" class="btn w-1/3" value="Buscar" name="Buscar">
+            <a href="/graficos/reiniciar" class="w-1/4"><input type="button" class="btn btn-outline" value="Reiniciar"></a>
+        </form>
+    </div>
+    <br>
     <div class="form-control">
         <label class="label cursor-pointer">
             <span class="label-text">Sectores</span>
@@ -27,7 +95,7 @@
                    value="bar" onchange="cb(this.value)" />
         </label>
     </div>
-    <div id="chart" class="chart w-2/3 center">
+    <div id="chart" class="chart w-full h-auto center">
     </div>
 {% endblock %}
 {% block lower_scripts %}

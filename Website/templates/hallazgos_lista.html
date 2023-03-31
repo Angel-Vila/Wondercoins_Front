@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Hallazgos{% endblock %}
+{% block content %}
+    <ul class="menu bg-base-300 rounded-box">
+    {% for i in hallazgos %}
+        <li><a href="/hallazgo/{{ i["section_id"] }}">{{ i["name"] }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
