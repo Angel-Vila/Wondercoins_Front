@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Informes{% endblock %}
+{% block content %}
+    <div id="searchbar" class="form-control w-full">
+        <form method="POST">
+            <div class="grid grid-cols-2 gap-5">
+                <div>
+                    <label for="materiales" class="label">
+                        <span class="label-text">Material</span>
+                    </label>
+                    <select id="materiales" class="select select-bordered" name="material">
+                        <option value="" selected>Seleccionar</option>
+                        {% for m in mats %}
+                            <option>{{ m }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="label" for="hallazgos">
+                        <span class="label-text">Lugar de hallazgo</span>
+                    </label>
+                    <input id="hallazgos" type="text" class="input input-md input-bordered w-full max-w-xs"
+                           name="hallazgo">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-x-5">
+                <div>
+                    <label class="label" for="tipos">
+                        <span class="label-text">Tipo</span>
+                    </label>
+                    <input id="tipos" class="input input-md input-bordered w-full max-w" name="tipos">
+                </div>
+                <div>
+                    <label class="label" for="ceca">
+                        <span class="label-text">Ceca</span>
+                    </label>
+                    <input id="ceca" class="input input-md input-bordered w-full max-w" name="ceca">
+                </div>
+            </div>
+        <br>
+            <input type="submit" class="btn w-1/3" value="Generar Informe" name="Generar informe">
+        </form>
+    </div>
+{% endblock %}

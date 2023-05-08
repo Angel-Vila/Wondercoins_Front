@@ -10,7 +10,7 @@
 <div class="drawer">
     <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
     <div class="drawer-content">
-        <div class="flex flex-col h-screen">
+        <div class="flex flex-col h-screen justify-between">
             <header class="h-1/6">
                 <div class="navbar bg-cabecera rounded-sm overflow-hidden h-5/6">
                     <div class="navbar-start">
@@ -31,14 +31,14 @@
             <div class="flex-grow mx-[15%] my-2">
                 {% block content %}{% endblock %}
             </div>
-            <footer class="footer p-10 bg-neutral text-neutral-content">
-                <div>
-                    <p class="footer-title">Trabajo realizado por Ángel Vila Vidal</p>
-                </div>
-                <div>
-                    <span class="footer-title">Redes sociales</span>
-                    <div>
-                    </div>
+            <footer class="footer footer-center bg-neutral text-neutral-content p-10 m-0">
+                <div class="items-center grid-flow-col gap-x-5 mx-[10%]">
+                    <img alt="Universidad de Cádiz" src="static/logo_uca_menor2.jpg">
+                    <img alt="Laboratorio de Arqueología y Prehistoria" src="static/labap-logo.jpg">
+                    <img alt="Escuela superior de Ingeniería" src="static/esi-logo.jpeg">
+                    <img alt="Campus de Excelencia Internacional del Mar" src="static/ceimar-logo.jpg">
+                    <img alt="Junta de Andalucía" src="static/junta-andalucia-logo.jpg">
+                    <img alt="Andalucía se mueve con Europa" src="static/andalucia-logo.jpg">
                 </div>
             </footer>
         </div>
@@ -48,11 +48,14 @@
         <ul class="menu p-4 w-80 bg-base-100 text-base-content">
             <li><a href="/inicio">Menú</a></li>
             <li><a href="/buscador">Catálogo de monedas</a></li>
+            <li><a href="/buscador_tipos">Catálogo de tipos</a></li>
             <li><a href="/tesoros">Tesoros</a></li>
             <li><a href="/hallazgos">Hallazgos</a></li>
-            <li><a href="mapa_cecas.html">Cecas</a></li>
+            <li><a href="/cecas">Cecas</a></li>
             <li><a href="/mapa">Mapa</a></li>
             <li><a href="/graficos">Gráficos</a></li>
+            <li><a href="/informes">Informes</a></li>
+            <li><a href="https://www.wondercoins.es/">Proyecto WonderCoins</a></li>
         </ul>
     </div>
 </div>
