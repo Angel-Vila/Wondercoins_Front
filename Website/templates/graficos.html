@@ -73,6 +73,9 @@
         </form>
     </div>
     <br>
+    {% if error %}
+        <p class="text-3xl">No se han encontrado monedas, usando datos por defecto</p>
+    {% endif %}
     <div class="form-control">
         <label class="label cursor-pointer">
             <span class="label-text">Sectores</span>

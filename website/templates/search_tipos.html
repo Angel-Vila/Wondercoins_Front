@@ -62,39 +62,44 @@
             </div>
             <br>
             <input type="submit" class="btn w-1/3" value="Buscar" name="Buscar">
-            <a href="/buscador_tipos/reiniciar" class="w-1/4"><input type="button" class="btn btn-outline" value="Reiniciar"></a>
+            <a href="/buscador_tipos/reiniciar" class="w-1/4"><input type="button" class="btn btn-outline"
+                                                                     value="Reiniciar"></a>
         </form>
     </div>
     <br>
-    <div class="grid grid-cols-2">
-        <div class="btn-group" id="paginador">
-            <form method="post">
-                <button type="submit" class="btn" name="pagina" value="0">INICIO</button>
-                {% if page > 1 %}
-                    <button type="submit" class="btn" name="pagina"
-                            value="{{ page - 2 }}">{{ page - 1 }}</button>{% endif %}
-                {% if page > 0 %}
-                    <button type="submit" class="btn" name="pagina"
-                            value="{{ page - 1 }}">{{ page }}</button>{% endif %}
-                <button type="submit" name="pagina" value="{{ page }}" class="btn btn-active">{{ page + 1 }}</button>
-                {% if page < n_pages - 1 %}
-                    <button type="submit" class="btn" name="pagina"
-                            value="{{ page + 1 }}">{{ page + 2 }}</button> {% endif %}
-                {% if page < n_pages - 2 %}
-                    <button type="submit" class="btn" name="pagina"
-                            value="{{ page + 2 }}">{{ page + 3 }}</button> {% endif %}
-                <button type="submit" class="btn" name="pagina" value="{{ n_pages - 1 }}">FIN</button>
-            </form>
-        </div>
-        <p class="text-xl">Mostrando {{ page * 50 + 1 }}-{% if (1 + page) * 50 <= n_tipos %}
+    {% if tipos|length > 0 %}
+        <div class="grid grid-cols-2">
+            <div class="btn-group" id="paginador">
+                <form method="post">
+                    <button type="submit" class="btn" name="pagina" value="0">INICIO</button>
+                    {% if page > 1 %}
+                        <button type="submit" class="btn" name="pagina"
+                                value="{{ page - 2 }}">{{ page - 1 }}</button>{% endif %}
+                    {% if page > 0 %}
+                        <button type="submit" class="btn" name="pagina"
+                                value="{{ page - 1 }}">{{ page }}</button>{% endif %}
+                    <button type="submit" name="pagina" value="{{ page }}"
+                            class="btn btn-active">{{ page + 1 }}</button>
+                    {% if page < n_pages - 1 %}
+                        <button type="submit" class="btn" name="pagina"
+                                value="{{ page + 1 }}">{{ page + 2 }}</button> {% endif %}
+                    {% if page < n_pages - 2 %}
+                        <button type="submit" class="btn" name="pagina"
+                                value="{{ page + 2 }}">{{ page + 3 }}</button> {% endif %}
+                    <button type="submit" class="btn" name="pagina" value="{{ n_pages - 1 }}">FIN</button>
+                </form>
+            </div>
+            <p class="text-xl">Mostrando {{ page * 50 + 1 }}-{% if (1 + page) * 50 <= n_tipos %}
                 {{ (page + 1) * 50 }}{% else %}{{ n_tipos }}
             {% endif %} de {{ n_tipos }} tipos</p>
-    </div>
-    <ul class="menu bg-base-300 w-full rounded-box p-10">
-    {% for i in tipos %}
-        <li><a href="/tipo/{{ i["section_id"] }}" target="_blank">{{ i["uri"] }}</a></li>
-    {% endfor %}
-    </ul>
-
+        </div>
+        <ul class="menu bg-base-300 w-full rounded-box p-10">
+            {% for i in tipos %}
+                <li><a href="/tipo/{{ i["section_id"] }}" target="_blank">{{ i["uri"] }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-4xl">No se han encontrado tipos</p>
+    {% endif %}
 
 {% endblock %}

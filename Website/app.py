@@ -156,6 +156,7 @@ def reiniciar_busqueda_tipos():
 
 @app.route("/graficos", methods=["POST", "GET"])
 def graficos():
+    error = False
     busqueda = {}
     dato = "mint"
     if flask.request.method == "POST":
@@ -174,11 +175,15 @@ def graficos():
         datos = peticiones.monedas_graficos_base(dato)
     else:
         monedas = peticiones.busqueda(flask.session.get("search_graficos"))
-        datos = peticiones.datos_grafico(monedas, dato)
+        if len(monedas) > 0:
+            datos = peticiones.datos_grafico(monedas, dato)
+        else:
+            datos = peticiones.monedas_graficos_base(dato)
+            error = True
     print(datos)
     flask.session["datos_grafico"] = datos
     grafico = generador_graficos.test(datos)
-    return flask.render_template("graficos.html", graphJSON=grafico, mats=materiales)
+    return flask.render_template("graficos.html", graphJSON=grafico, mats=materiales, error=error)
 
 
 @app.route("/graficos/reiniciar")
@@ -204,15 +209,19 @@ def mapa():
 
 @app.route("/informes", methods=["POST", "GET"])
 def informes():
+    error = False
     materiales = peticiones.materiales()
     if flask.request.method == "POST":
         busqueda = {"material": flask.request.form.get("material"), "type_full_value": flask.request.form.get("tipos"),
                     "mint": flask.request.form.get("ceca")}
         monedas = peticiones.busqueda(busqueda)
-        generador_informes.generar_informe(peticiones.datos_informe(monedas))
-        return flask.send_file("informes/prueba.pdf", download_name=f'informe_{datetime.datetime.now()}.pdf',
-                               as_attachment=True)
-    return flask.render_template("informes.html", mats=materiales)
+        if len(monedas) > 0:
+            generador_informes.generar_informe(peticiones.datos_informe(monedas))
+            return flask.send_file("informes/prueba.pdf", download_name=f'informe_{datetime.datetime.now()}.pdf',
+                                   as_attachment=True)
+        else:
+            error = True
+    return flask.render_template("informes.html", mats=materiales, error=error)
 
 
 if __name__ == "__main__":

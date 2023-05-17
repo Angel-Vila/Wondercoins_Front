@@ -122,6 +122,19 @@ def info_tipo(id_tipo):
         except TypeError:
             result["monedas"] = []
         result["uri"] = result["uri"].split(",")
+        autores = result["creators_names"].split("|") if result["creators_names"] is not None else []
+        try:
+            result["emisor"] = autores[0]
+        except IndexError:
+            result["emisor"] = ""
+        try:
+            result["autoridad"] = "|".join(autores[1:-1])
+        except IndexError:
+            result["autoridad"] = ""
+        try:
+            result["retrato"] = autores[-1] if len(autores) > 1 else ""
+        except IndexError:
+            result["retrato"] = ""
     except IndexError:
         result = []
     return result
@@ -339,6 +352,11 @@ def info_hallazgo(id_hallazgo):
 
 def filtro_monedas(result):
     filtro = re.compile('<.*?>')
+    try:
+        id_biblio = json.loads(result["bibliography_data"])
+        result["biblio"] = bibliografia(id_biblio[0])
+    except TypeError:
+        result["biblio"] = ""
     result["public_info"] = re.sub(filtro, "", result["public_info"])
     try:
         result["georef"] = json.loads(result["georef"])[0]
@@ -406,7 +424,6 @@ def info_ceca(id_ceca):
                      "lang=lg-spa&limit=0&resolve_portal=false&resolve_dd_relations=false")
     result = r.json()["result"][0]
     result["map"] = json.loads(result["map"])
-    result["georef_geojson"] = json.loads(result["georef_geojson"])
     monedas = json.loads(result["relations_coins"])
     result["monedas"] = coins_ceca(monedas)
     return result
@@ -488,12 +505,14 @@ def busqueda_tipos(parametros):
 
 
 def tipos_buscador(vec_tipos, offset):
+    if not vec_tipos:
+        return []
     tipos = vec_tipos[offset * 50: offset * 50 + 50] if len(vec_tipos) > offset * 50 + 50 else vec_tipos[offset * 50:]
     print(len(tipos))
     r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/"
-                         "records?code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=types&ar_fields=section_id%"
-                         f"2C%20uri&section_id={','.join(tipos)}&lang=lg-spa&order=section_id%20ASC&limit=50&"
-                         f"resolve_portal=false&resolve_dd_relations=false&")
+                     "records?code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=types&ar_fields=section_id%"
+                     f"2C%20uri&section_id={','.join(tipos)}&lang=lg-spa&order=section_id%20ASC&limit=50&"
+                     f"resolve_portal=false&resolve_dd_relations=false&")
     lista_tipos = r.json()["result"]
     for i in lista_tipos:
         i["uri"] = i["uri"].split(",")[0]
@@ -508,5 +527,15 @@ def num_tipos():
     return int(r.json()["result"][0]["COUNT(*)"])
 
 
+def bibliografia(id_b):
+    r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/"
+                     f"records?code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=bibliographic_references&section_id={id_b}"
+                     "&lang=lg-spa&limit=10&resolve_portal=false&resolve_dd_relations=false")
+    result = r.json()["result"][0]
+    return " | ".join([result["ref_publications_title"], result["ref_publications_authors"],
+                       result["ref_publications_magazine"], result["ref_publications_editor"],
+                       result["ref_publications_date"]])
+
+
 if __name__ == "__main__":
-    print(tipos_buscador(busqueda_tipos({"material": "Plata"}), 0))
+    print(bibliografia(13))

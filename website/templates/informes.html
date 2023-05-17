@@ -41,4 +41,7 @@
             <input type="submit" class="btn w-1/3" value="Generar Informe" name="Generar informe">
         </form>
     </div>
+    {% if error %}
+        <p class="text-3xl">No se han encontrado monedas. No se ha podido generar el informe.</p>
+    {% endif %}
 {% endblock %}

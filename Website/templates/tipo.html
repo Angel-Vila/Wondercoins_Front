@@ -28,17 +28,17 @@
         <div>
             <h2>Emisor</h2>
             <hr>
-            <h2>X</h2>
+            <h2>{{ tipo.get("emisor") }}</h2>
         </div>
         <div>
             <h2>Autoridad</h2>
             <hr>
-            <h2>X</h2>
+            <h2>{{ tipo.get("autoridad") }}</h2>
         </div>
         <div>
             <h2>Retrato</h2>
             <hr>
-            <h2>X</h2>
+            <h2>{{ tipo.get("retrato") }}</h2>
         </div>
     </div>
     <div class="grid grid-cols-2 gap-x-5">
@@ -81,7 +81,7 @@
                 <div class="card-body">
                     <h2 class="card-title">{{ i.get("section_id") }} - {{ i.get("mint")[0] }}
                         - {{ i.get("catalogue_type_mint")[0] }}</h2>
-                    <a href="/moneda/{{ i.get("section_id") }}"><p>Más información</p></a>
+                    <a href="/moneda/{{ i.get("section_id") }}"><p class="text-xl">Más información</p></a>
                 </div>
             </div>
         {% endfor %}
