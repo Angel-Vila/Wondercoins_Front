@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Tipo{% endblock %}
+{% block title %}{{ tipo.get("uri")[0] }}{% endblock %}
 {% block content %}
     <h1 class="text-2xl">{{ tipo.get("uri")[0] }}</h1>
     <div class="grid grid-cols-4 gap-x-5">
@@ -81,7 +81,7 @@
                 <div class="card-body">
                     <h2 class="card-title">{{ i.get("section_id") }} - {{ i.get("mint")[0] }}
                         - {{ i.get("catalogue_type_mint")[0] }}</h2>
-                    <a href="/moneda/{{ i.get("section_id") }}"><p class="text-xl">Más información</p></a>
+                    <a target="_blank" href="/moneda/{{ i.get("section_id") }}"><p class="text-xl">Más información</p></a>
                 </div>
             </div>
         {% endfor %}

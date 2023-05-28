@@ -217,7 +217,7 @@ def informes():
         monedas = peticiones.busqueda(busqueda)
         if len(monedas) > 0:
             generador_informes.generar_informe(peticiones.datos_informe(monedas))
-            return flask.send_file("informes/prueba.pdf", download_name=f'informe_{datetime.datetime.now()}.pdf',
+            return flask.send_file("informes/documento.pdf", download_name=f'informe_{datetime.datetime.now()}.pdf',
                                    as_attachment=True)
         else:
             error = True

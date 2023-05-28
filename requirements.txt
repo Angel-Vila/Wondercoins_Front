@@ -1,5 +1,5 @@
-Flask~=2.1.2
-requests~=2.27.1
+Flask~=2.2.5
+requests~=2.31
 tweepy~=4.8.0
 telegram~=0.0.1
 instapy~=0.6.16

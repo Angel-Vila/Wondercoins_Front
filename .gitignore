@@ -6,9 +6,10 @@
 /Twitter bot/BEARER_TOKEN.txt
 /Twitter bot/ACCESS_TOKEN.txt
 /Twitter bot/ACCESS_TOKEN_SECRET.txt
-/Website/GOOGLE_API.txt
+/website/GOOGLE_API.txt
 /Data extraction/*.accdb
 /Data extraction/*.csv
 /Data extraction/*.xlsx
 /Data extraction/*.tsv
 /Instagram bot/
+/website/informes/*.pdf

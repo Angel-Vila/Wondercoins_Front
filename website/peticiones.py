@@ -27,8 +27,9 @@ def info_moneda(id_moneda):
                      f"code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&ar_fields=section_id%2C%20catalogue_type_mint"
                      f"%2C%20mint%2C%20type%2C%20type_full_value%2C%20mint_name%2C%20weight%2C%20diameter%2C%20dies%"
                      f"2C%20image_obverse%2C%20image_reverse%2C%20number%2C%20uri%2C%20find_type%2C%20findspot"
-                     f"%2C%20type_data&"
-                     f"section_id={id_moneda}&lang=lg-spa&limit=10&resolve_portal=false&resolve_dd_relations=false")
+                     f"%2C%20type_data%2C%20peculiarity_production%2C%20collection%2C%20bibliography_title"
+                     f"%2C%20public_info%2C%20findspot_data"
+                     f"&section_id={id_moneda}&lang=lg-spa&limit=10&resolve_portal=false&resolve_dd_relations=false")
     try:
         result = r.json()["result"][0]
         try:
@@ -57,6 +58,14 @@ def info_moneda(id_moneda):
             result["d_reverso"] = ""
             result["l_anverso"] = ""
             result["l_reverso"] = ""
+        try:
+            datos_hallazgo = info_hallazgo(json.loads(result["findspot_data"])[0])
+            print(datos_hallazgo)
+            result["map"] = datos_hallazgo["map"]
+            result["popup"] = datos_hallazgo["popup"]
+        except (TypeError, AttributeError):
+            result["map"] = ""
+            result["popup"] = ""
     except IndexError:
         result = []
     return result
@@ -367,9 +376,11 @@ def filtro_monedas(result):
     result["map"] = json.loads(result["map"])
     try:
         result["coins"] = json.loads(result["coins"])
+        result["tamanno"] = len(result["coins"])
         result["muestra"] = coins_tipo(result["coins"][:9]) if len(result["coins"]) > 9 else coins_tipo(result["coins"])
     except TypeError:
         result["muestra"] = []
+        result["tamanno"] = 0
     return result
 
 
@@ -538,4 +549,4 @@ def bibliografia(id_b):
 
 
 if __name__ == "__main__":
-    print(bibliografia(13))
+    print(info_moneda(967))
