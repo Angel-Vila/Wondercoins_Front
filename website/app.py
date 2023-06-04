@@ -9,6 +9,7 @@ import generador_informes
 app = flask.Flask(__name__)
 app.secret_key = "WwwWonderCoins"
 CORS(app)
+error404 = "404.html"
 
 
 @app.route("/inicio")
@@ -27,7 +28,7 @@ def inicio():
 def moneda(idmoneda):
     info_moneda = peticiones.info_moneda(idmoneda)
     if len(info_moneda) < 1:
-        return flask.render_template("404.html")
+        return flask.render_template(error404)
     return flask.render_template("moneda.html", moneda=info_moneda)
 
 
@@ -35,7 +36,7 @@ def moneda(idmoneda):
 def tipo(idtipo):
     info_tipo = peticiones.info_tipo(idtipo)
     if not info_tipo:
-        return flask.render_template("404.html")
+        return flask.render_template(error404)
     return flask.render_template("tipo.html", tipo=info_tipo)
 
 
@@ -49,7 +50,7 @@ def tesoros():
 def tesoro(id_tesoro):
     datos_tesoro = peticiones.info_tesoro(id_tesoro)
     if not datos_tesoro:
-        return flask.render_template("404.html")
+        return flask.render_template(error404)
     return flask.render_template("tesoro.html", datos=datos_tesoro)
 
 
@@ -63,7 +64,7 @@ def hallazgos():
 def hallazgo(id_hallazgo):
     datos_hallazgo = peticiones.info_hallazgo(id_hallazgo)
     if not datos_hallazgo:
-        return flask.render_template("404.html")
+        return flask.render_template(error404)
     return flask.render_template("hallazgo.html", datos=datos_hallazgo)
 
 
@@ -77,7 +78,7 @@ def mapa_cecas():
 def ceca(id_ceca):
     datos_ceca = peticiones.info_ceca(id_ceca)
     if not datos_ceca:
-        return flask.render_template("404.html")
+        return flask.render_template(error404)
     return flask.render_template("ceca.html", datos=datos_ceca)
 
 
@@ -122,15 +123,14 @@ def reiniciar_busqueda():
 def buscador_tipos():
     busqueda = {}
     pagina = 0
-    if flask.request.method == "POST":
-        if "Buscar" in flask.request.form:
-            busqueda["material"] = flask.request.form.get("material")
-            busqueda["catalogue"] = flask.request.form.get("catalogo")
-            busqueda["mint"] = flask.request.form.get("ceca")
-            busqueda["denomination"] = flask.request.form.get("denominacion")
-            busqueda["date_in"] = flask.request.form.get("date_in")
-            busqueda["date_out"] = flask.request.form.get("date_out")
-            flask.session["busqueda_tipos"] = busqueda
+    if flask.request.method == "POST" and "Buscar" in flask.request.form:
+        busqueda["material"] = flask.request.form.get("material")
+        busqueda["catalogue"] = flask.request.form.get("catalogo")
+        busqueda["mint"] = flask.request.form.get("ceca")
+        busqueda["denomination"] = flask.request.form.get("denominacion")
+        busqueda["date_in"] = flask.request.form.get("date_in")
+        busqueda["date_out"] = flask.request.form.get("date_out")
+        flask.session["busqueda_tipos"] = busqueda
     pagina = int(flask.request.form.get("pagina")) if flask.request.form.get("pagina") is not None else pagina
     materiales = peticiones.materiales()
     denominaciones = peticiones.denominaciones()
@@ -159,13 +159,12 @@ def graficos():
     error = False
     busqueda = {}
     dato = "mint"
-    if flask.request.method == "POST":
-        if "Buscar" in flask.request.form:
-            busqueda["material"] = flask.request.form.get("material")
-            busqueda["type_full_value"] = flask.request.form.get("tipos")
-            busqueda["mint"] = flask.request.form.get("ceca")
-            dato = flask.request.form.get("valor")
-            flask.session["search_graficos"] = busqueda
+    if flask.request.method == "POST" and "Buscar" in flask.request.form:
+        busqueda["material"] = flask.request.form.get("material")
+        busqueda["type_full_value"] = flask.request.form.get("tipos")
+        busqueda["mint"] = flask.request.form.get("ceca")
+        dato = flask.request.form.get("valor")
+        flask.session["search_graficos"] = busqueda
     materiales = peticiones.materiales()
     print(flask.session.get("search_graficos")) if "search_graficos" in flask.session.keys() else print("Vacio")
     if "search_graficos" not in flask.session.keys():

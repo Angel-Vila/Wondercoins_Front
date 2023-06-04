@@ -2,6 +2,7 @@ from fpdf import FPDF
 
 
 def generar_informe(datos_monedas):
+    """Genera un informe dados los datos de las monedas"""
     first_row = ("Nº", "Valor", "Anverso", "Reverso", "Ceca", "Peso", "Mod", "P.C.", "Ref", "Registro")
     datos_monedas.insert(0, first_row)
     pdf = FPDF()
@@ -33,4 +34,4 @@ def generar_informe(datos_monedas):
         pdf.multi_cell(20, line_height, row[9], border=1,
                        new_x="RIGHT", new_y="TOP", max_line_height=pdf.font_size, align="C")
         pdf.ln(line_height)
-    pdf.output(f"informes/documento.pdf")
+    pdf.output("informes/documento.pdf")

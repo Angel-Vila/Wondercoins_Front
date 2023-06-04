@@ -2,7 +2,7 @@
 {% block title %}Buscador{% endblock %}
 {% block content %}
     <div id="searchbar" class="form-control w-full">
-        <form method="POST">
+        <form method="POST" id="buscador">
             <div class="grid grid-cols-3 gap-5">
                 <div>
                     <label class="label" for="m_id">
@@ -81,7 +81,7 @@
         <div class="grid grid-cols-2 align-content-end m-top-5">
             {% for i in monedas %}
                 <a target="_blank" href="/moneda/{{ i.get("section_id") }}">
-                    <div>
+                    <div  id="moneda-{{ i.get("section_id") }}">
                         <div class="card card-side bg-base-100 shadow-xl h-full w-auto m-5">
                             <figure class="h-auto w-1/5 w-auto object-contain">
                                 <img src="{{ i.get("image_obverse") }}" alt="../static/logo-sinletras-sinfondo.jpg"

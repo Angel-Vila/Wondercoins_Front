@@ -13,3 +13,4 @@
 /Data extraction/*.tsv
 /Instagram bot/
 /website/informes/*.pdf
+/website/tests/geckodriver.log

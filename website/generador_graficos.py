@@ -4,6 +4,7 @@ import plotly.utils
 
 
 def test(datos, chart_type="pie"):
+    """Genera un grafico dado datos y tipo de grafico"""
     print(chart_type)
     if chart_type == "pie":
         fig = px.pie(datos, values='data', names='keys', title='Gráfico de monedas')
@@ -12,5 +13,5 @@ def test(datos, chart_type="pie"):
     else:
         fig = ""
 
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
+    graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return graph_json
