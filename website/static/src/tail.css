@@ -1131,7 +1131,7 @@ html{
 }
 
 [data-theme=wireframe]{
-  font-family: Chalkboard,comic sans ms,"sanssecondaryerif";
+  font-family: Chalkboard,comic sans ms,"sanssecondaryerif", sans-serif;
   --pf: 0 0% 58%;
   --sf: 0 0% 58%;
   --af: 0 0% 58%;

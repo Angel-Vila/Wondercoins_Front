@@ -1,14 +1,17 @@
-import random
 import datetime
+import secrets
 import flask
+from flask import make_response, render_template
 from flask_cors import CORS
 import peticiones
 import generador_graficos
 import generador_informes
+from flask_wtf.csrf import CSRFProtect
 
 app = flask.Flask(__name__)
 app.secret_key = "WwwWonderCoins"
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
+csrf = CSRFProtect(app)
 error404 = "404.html"
 
 
@@ -17,7 +20,7 @@ error404 = "404.html"
 def inicio():
     dedalo_link = "https://wondercoins.uca.es"
     num_monedas = peticiones.monedas_inicio()
-    info_moneda = random.choice(num_monedas)
+    info_moneda = secrets.choice(num_monedas)
     imagen = dedalo_link + info_moneda["image_obverse"]
     pie_imagen = info_moneda["type_full_value"].split("|")[-1].strip()
     id_moneda = info_moneda["section_id"]
@@ -109,8 +112,8 @@ def buscador():
         num_paginas = len(num_monedas) // 100 + 1 if len(num_monedas) % 100 != 0 else len(num_monedas) // 100
         num_monedas = len(num_monedas)
     print(len(monedas))
-    return flask.render_template("searchbar.html", mats=materiales, n_pages=num_paginas, page=pagina, monedas=monedas,
-                                 n_monedas=num_monedas)
+    return make_response(render_template("searchbar.html", mats=materiales, n_pages=num_paginas, page=pagina,
+                                         monedas=monedas, n_monedas=num_monedas), 200)
 
 
 @app.route("/buscador/reiniciar", methods=["POST", "GET"])
@@ -144,8 +147,8 @@ def buscador_tipos():
         vec_tipos = peticiones.busqueda_tipos(flask.session.get("busqueda_tipos"))
         num_paginas = len(vec_tipos) // 100 + 1 if len(vec_tipos) % 100 != 0 else len(vec_tipos) // 100
         num_tipos = len(vec_tipos)
-    return flask.render_template("search_tipos.html", mats=materiales, dems=denominaciones, cats=catalogos,
-                                 n_pages=num_paginas, page=pagina, tipos=tipos, n_tipos=num_tipos)
+    return make_response(render_template("search_tipos.html", mats=materiales, dems=denominaciones, cats=catalogos,
+                                 n_pages=num_paginas, page=pagina, tipos=tipos, n_tipos=num_tipos), 200)
 
 
 @app.route("/buscador_tipos/reiniciar", methods=["POST", "GET"])
@@ -182,7 +185,7 @@ def graficos():
     print(datos)
     flask.session["datos_grafico"] = datos
     grafico = generador_graficos.test(datos)
-    return flask.render_template("graficos.html", graphJSON=grafico, mats=materiales, error=error)
+    return make_response(render_template("graficos.html", graphJSON=grafico, mats=materiales, error=error), 200)
 
 
 @app.route("/graficos/reiniciar")
@@ -216,12 +219,13 @@ def informes():
         monedas = peticiones.busqueda(busqueda)
         if len(monedas) > 0:
             generador_informes.generar_informe(peticiones.datos_informe(monedas))
-            return flask.send_file("informes/documento.pdf", download_name=f'informe_{datetime.datetime.now()}.pdf',
-                                   as_attachment=True)
+            return make_response(flask.send_file("informes/documento.pdf",
+                                                 download_name=f'informe_{datetime.datetime.now()}.pdf',
+                                                 as_attachment=True), 200)
         else:
             error = True
-    return flask.render_template("informes.html", mats=materiales, error=error)
+    return make_response(render_template("informes.html", mats=materiales, error=error), 200)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

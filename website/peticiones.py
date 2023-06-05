@@ -294,9 +294,7 @@ def monedas_buscador(id_monedas, offset):
         return []
     lista_monedas = id_monedas[offset * 100:offset * 100 + 100] if len(id_monedas) > offset * 100 + 100 \
         else id_monedas[offset * 100:]
-    print(lista_monedas)
     lista_ids = ",".join(lista_monedas)
-    print(lista_ids)
     r = requests.get("http://wwwondercoins.uca.es/dedalo/lib/dedalo/publication/server_api/v1/json/records?"
                      "code=12sdf58d91fgt_66sdfc-_ssddsDF_F*l&table=coins&ar_fields=number%2C%20image_obverse%2C%20"
                      "image_reverse%2C%20section_id%2C%20mint%2C%20catalogue_type_mint%2C%20type_data&lang=lg-spa&"

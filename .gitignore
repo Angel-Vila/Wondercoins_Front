@@ -14,3 +14,5 @@
 /Instagram bot/
 /website/informes/*.pdf
 /website/tests/geckodriver.log
+/website/.scannerwork
+/.scannerwork

@@ -24,7 +24,7 @@
     <hr>
     <ul class="list-disc grid grid-cols-2">
         {% for i in datos.get("uri").split("|") %}
-            <li><a href="{{ i.strip() }}" target="_blank">{{ i.strip() }}</a></li>
+            <li><a rel="noopener" href="{{ i.strip() }}" target="_blank">{{ i.strip() }}</a></li>
         {% endfor %}
     </ul>
     <h2>Dispersión monetaria de la ceca</h2>
