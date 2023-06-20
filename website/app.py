@@ -6,12 +6,10 @@ from flask_cors import CORS
 import peticiones
 import generador_graficos
 import generador_informes
-from flask_wtf.csrf import CSRFProtect
 
 app = flask.Flask(__name__)
 app.secret_key = "WwwWonderCoins"
 CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
-csrf = CSRFProtect(app)
 error404 = "404.html"
 
 
